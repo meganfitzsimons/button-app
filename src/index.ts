@@ -12,29 +12,17 @@ import {
 
 import '../style/index.css';
 
-// function addButton(picture: Element) {
-	
-
-// 	// 3. Add event handler
-// 	// button.addEventListener ("click", function() {
-// 	//   alert("Annotate");
-// 	// });
-// }
 
 function findPictures() {
 	var pictures = document.getElementsByClassName("jp-RenderedImage");
 	console.log('piczz!');
 	console.log(pictures.length);
 	console.log(pictures);
-	(window as any).pics = pictures;
+	(window as any).pictures = pictures;
 
-	var picarray = Array.from(pictures); 
+	var picarray = Array.from(pictures);
 	console.log(picarray);
 
-
-	// for(let picture of pictures) {
-	// 	addButton(picture);
-	// }
 	Array.from(pictures).forEach(function(picture){
 		console.log('worked');
 		console.log(picture);
@@ -45,18 +33,30 @@ function findPictures() {
 		// 2. Append somewhere
 		picture.appendChild(button);
 
-	}); //{
-		
-		
-	// 	var button = document.createElement("button");
-	// 	button.innerHTML = "Button";
-
-	// 	// 2. Append somewhere
-	// 	el.appendChild(button);
-	// });
+	});
 };
 
 (window as any).findPictures = findPictures;
+
+
+// Export scribbles as SVG to S3.
+function uploadImage (image) {
+    // Image must be an image file with a name (How???)
+
+    // var trsvg = canvas.toSVG();
+    console.log('save...');
+
+    var request = $.ajax({
+        url: "https://ngj8pqd220.execute-api.eu-west-1.amazonaws.com/dev",
+        method: "POST",
+        headers: {'Access-Control-Allow-Origin': true},
+        data: { "user_file" : image },
+        dataType: "text"
+    }).done(function( msg ) {
+        console.log( msg );
+    }).fail(function( jqXHR, textStatus ) {
+        console.log( "Request failed: " + textStatus );
+    });
 
 /**
  * Initialization data for the jupyter-extension-new extension.
@@ -89,7 +89,7 @@ const extension: JupyterLabPlugin<void> = {
 		// Add the command to the palette.
   	palette.addItem({command, category: 'Tutorial'});
 
-  	setInterval(findPictures, 1000);
+  	setInterval(findPictures, 10000);
 
   }
 
