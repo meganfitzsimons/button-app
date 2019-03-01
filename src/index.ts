@@ -12,8 +12,14 @@ import {
 
 import '../style/index.css';
 
+import {
+  NotebookActions
+} from '@jupyterlab/notebook'
 
 function findPictures() {
+  // if cell.hasClassName('jp-RenderedImage')
+
+
 	var pictures = document.getElementsByClassName("jp-RenderedImage");
 	console.log('piczz!');
 	console.log(pictures.length);
@@ -39,24 +45,25 @@ function findPictures() {
 (window as any).findPictures = findPictures;
 
 
-// Export scribbles as SVG to S3.
-function uploadImage (image) {
-    // Image must be an image file with a name (How???)
 
-    // var trsvg = canvas.toSVG();
-    console.log('save...');
+/////////////////////////
+// uploadImage('https://ngj8pqd220.execute-api.eu-west-1.amazonaws.com/dev', 'image')
+  // .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call
+  // .catch(error => console.error(error));
 
-    var request = $.ajax({
-        url: "https://ngj8pqd220.execute-api.eu-west-1.amazonaws.com/dev",
-        method: "POST",
-        headers: {'Access-Control-Allow-Origin': true},
-        data: { "user_file" : image },
-        dataType: "text"
-    }).done(function( msg ) {
-        console.log( msg );
-    }).fail(function( jqXHR, textStatus ) {
-        console.log( "Request failed: " + textStatus );
-    });
+// function uploadImage(url = "", img = {}) {
+//   // Default options are marked with *
+//     // return fetch(url, {
+//     //   method: "POST",
+//     //   headers: {
+//     //     "Content-Type": "image/png",
+//     //     "Access-Control-Allow-Origin": true},
+//     //   data: { "user_file" : img },
+//     //   dataType: "text"
+//     // })
+//     // .then(response => response.json()); // parses response to JSON
+//     console.log("WAHAAYA WERE IN THE UPLOAD IMAGE SAFD;IAJHS;FIJASFD!!")
+// }
 
 /**
  * Initialization data for the jupyter-extension-new extension.
@@ -89,10 +96,30 @@ const extension: JupyterLabPlugin<void> = {
 		// Add the command to the palette.
   	palette.addItem({command, category: 'Tutorial'});
 
-  	setInterval(findPictures, 10000);
+    // STUFF HAPPENS
 
+    // declare var notebookactions = NotebookActions;
+
+    console.log(NotebookActions)
+    console.log('---')
+    console.log(NotebookActions.executed)
+    // document.addEventListener('NotebookActions.executed.emit', function(event){
+    //   console.log('NotebookActions.executed did a !')
+    //   // findPictures()
+    // })
+    NotebookActions.executed.connect(function(){
+      console.log('Added function to NotebookActions')
+      // addAnnotableButton(sender)
+    })
+
+
+
+  	// setInterval(findPictures, 10000);
+    // uploadImage('https://ngj8pqd220.execute-api.eu-west-1.amazonaws.com/dev', 'image')
   }
 
 }
+
+
 
 export default extension;
