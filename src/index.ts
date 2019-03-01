@@ -107,8 +107,9 @@ const extension: JupyterLabPlugin<void> = {
     //   console.log('NotebookActions.executed did a !')
     //   // findPictures()
     // })
-    NotebookActions.executed.connect(function(){
+    NotebookActions.executed.connect(function(sender = NotebookActions){
       console.log('Added function to NotebookActions')
+      console.log('NotebookActions', sender)
       // addAnnotableButton(sender)
     })
 
